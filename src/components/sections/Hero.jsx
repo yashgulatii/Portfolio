@@ -105,6 +105,35 @@ export default function Hero() {
               contactyashgulati@gmail.com
             </a>
           </motion.div>
+
+          {/* Stats Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="w-full border-t border-border/40 pt-6 mt-6"
+          >
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+              <div className="flex flex-col items-start">
+                <span className="font-mono text-2xl md:text-3xl text-accent font-bold">
+                  {stats.rank === 'Top 2%' ? 'Top 2%' : stats.rank}
+                </span>
+                <span className="text-text-secondary text-[11px] mt-1 uppercase tracking-wider font-mono">THM Global Rank</span>
+              </div>
+              <div className="flex flex-col items-start border-l border-border/30 pl-4 sm:pl-6">
+                <span className="font-mono text-2xl md:text-3xl text-accent font-bold">7</span>
+                <span className="text-text-secondary text-[11px] mt-1 uppercase tracking-wider font-mono">Tools Built</span>
+              </div>
+              <div className="flex flex-col items-start sm:border-l border-border/30 pl-0 sm:pl-6">
+                <span className="font-mono text-2xl md:text-3xl text-accent font-bold">{stats.roomsCompleted}</span>
+                <span className="text-text-secondary text-[11px] mt-1 uppercase tracking-wider font-mono">Rooms Solved</span>
+              </div>
+              <div className="flex flex-col items-start border-l border-border/30 pl-4 sm:pl-6">
+                <span className="font-mono text-2xl md:text-3xl text-accent font-bold">100+</span>
+                <span className="text-text-secondary text-[11px] mt-1 uppercase tracking-wider font-mono">Beta Users</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         {/* Right Column */}

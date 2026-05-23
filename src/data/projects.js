@@ -4,8 +4,8 @@ export const projects = [
     title: "Campus Track — College Management System",
     category: "Full-stack",
     stack: ["Flutter", "Flask", "Firebase Auth + Firestore"],
-    description: "Cross-platform academic management system deployed with systemd + Gunicorn; tested via ngrok tunneling, with 100+ beta users across college departments. Discovered and documented a real Broken Access Control vulnerability during self-audit.",
-    fullDescription: "Campus Track is a complete cross-platform academic management system co-developed and audited from a security perspective. Successfully deployed on a production-like environment with systemd + Gunicorn, with 100+ active beta users across college departments. During a self-audit of the codebase, discovered and documented a real Broken Access Control vulnerability.",
+    description: "Campus Track is a cross-platform academic management system built in collaboration — Flask backend, Firebase integration, deployment infrastructure, and security audit by Yash Gulati. Frontend developed by a collaborator. Deployed and beta-launched with 100+ real users across college departments. During a self-audit of the codebase, discovered and documented a real Broken Access Control vulnerability.",
+    fullDescription: "Campus Track is a cross-platform academic management system built in collaboration — Flask backend, Firebase integration, deployment infrastructure, and security audit by Yash Gulati. Frontend developed by a collaborator. Deployed and beta-launched with 100+ real users across college departments. During a self-audit of the codebase, discovered and documented a real Broken Access Control vulnerability.",
     vulnerability: {
       title: "Role Boundary Bypass (Broken Access Control)",
       details: "A student-role user could escalate to teacher or admin by modifying the URL path. The server performed no server-side role validation, granting full account access including write permissions across all role boundaries.",

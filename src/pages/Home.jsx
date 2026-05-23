@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import Hero from '../components/sections/Hero';
-import Stats from '../components/sections/Stats';
 import About from '../components/sections/About';
 import ProjectsPreview from '../components/sections/ProjectsPreview';
 import Skills from '../components/sections/Skills';
@@ -21,7 +20,6 @@ export default function Home() {
       </Helmet>
 
       <Hero />
-      <Stats />
       <About />
       <ProjectsPreview />
       <Skills />

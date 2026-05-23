@@ -18,11 +18,11 @@ export default function TryHackMe() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
             {/* Left side: Embed or Fallback */}
-            <div className="w-full flex justify-center bg-[#111] rounded-lg p-4 md:p-8 min-h-[160px] items-center border border-border/50 shadow-inner">
+            <div className="w-full flex justify-center items-center bg-transparent border-none p-0 overflow-hidden">
               {!iframeError ? (
                 <iframe
                   src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=2570639"
-                  style={{ border: 'none', width: '330px', height: '88px', overflow: 'hidden' }}
+                  className="border-none w-[330px] h-[88px] overflow-hidden"
                   title="TryHackMe Profile Badge"
                   scrolling="no"
                   onError={() => setIframeError(true)}

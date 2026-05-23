@@ -57,8 +57,8 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Flex layout with centered wrapping for orphaned cards */}
+        <motion.div layout className="flex flex-wrap gap-8 justify-center">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map(project => (
               <motion.div
@@ -68,7 +68,11 @@ export default function Projects() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className={project.id === 'campus-track' ? 'md:col-span-2 lg:col-span-3 w-full' : ''}
+                className={
+                  project.id === 'campus-track'
+                    ? 'w-full'
+                    : 'w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] flex-grow-0 flex-shrink-0'
+                }
               >
                 <ProjectCard project={project} featured={false} />
               </motion.div>
