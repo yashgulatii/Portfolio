@@ -19,26 +19,14 @@ export default function About() {
             <span className="text-accent text-sm font-mono tracking-wider uppercase">About</span>
             
             <h2 className="text-3xl md:text-4xl text-text-primary leading-tight text-balance">
-              I build security tools.<br />
-              Then I break into things with them.
+              Cybersecurity Analyst specializing in Offensive Security & AppSec.
             </h2>
             
             <div className="text-text-secondary text-lg leading-relaxed flex flex-col gap-6 mt-4">
               <p>
-                Most security students read about vulnerabilities. I've been shipping Python
-                tools that exploit them since my second year — a network scanner, an
-                encrypted comms tool, a dual-factor auth system, a keylogger forensics
-                utility. Seven tools in total, each designed to understand a specific
-                attack surface by building it from scratch.
-              </p>
-              <p>
-                In my final-year project, Campus Track, I found and documented a real IDOR
-                vulnerability in a production system with 100+ active users — then fixed it.
-              </p>
-              <p>
-                My TryHackMe profile ({stats.rank} globally, {stats.roomsCompleted} rooms) is the lab work. The
-                tools are the engineering. The internship in ethical hacking is the
-                application. Hiring me means you get all three.
+                I am a final-year Electronics student transitioning into cybersecurity.
+                I built and deployed a production system used by over 100 people.
+                During a self-audit of this system, I discovered a real Broken Access Control vulnerability and documented it with CVSS 3.1 scoring.
               </p>
             </div>
           </motion.div>
@@ -51,23 +39,50 @@ export default function About() {
             transition={{ delay: 0.1 }}
             className="md:col-span-4"
           >
-            <div className="bg-bg-card border border-border p-8 rounded-lg flex flex-col gap-8 h-full">
-              <div>
-                <h3 className="text-text-primary font-bold mb-1">B.Sc. Electronics (Hons)</h3>
-                <p className="text-text-secondary text-sm">Rajdhani College, University of Delhi</p>
-                <p className="text-text-muted text-sm mt-1">Expected: June 2026</p>
+            <div className="bg-bg-card border border-border p-8 rounded-lg flex flex-col gap-6 h-full text-left">
+              <h3 className="text-text-primary font-bold text-lg border-b border-border pb-2">Credentials</h3>
+              
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-3 items-start">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                  <p className="text-text-primary text-sm font-medium leading-relaxed">
+                    Google Cybersecurity Professional Certificate
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                  <p className="text-text-primary text-sm font-medium leading-relaxed">
+                    CNSP (Certified Network Security Practitioner)
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                  <p className="text-text-primary text-sm font-medium leading-relaxed">
+                    Top 2% globally on TryHackMe —{' '}
+                    <a
+                      href="https://tryhackme.com/p/yashgulatii"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:underline font-mono"
+                    >
+                      public profile
+                    </a>
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                  <p className="text-text-primary text-sm font-medium leading-relaxed">
+                    B.Sc. Electronics Honours — Rajdhani College, University of Delhi (Final Year)
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <h3 className="text-text-primary font-bold mb-1">Google Cybersecurity Professional</h3>
-                <p className="text-text-primary font-bold mb-1">CNSP — Certified Network Security Practitioner</p>
-                <p className="text-text-muted text-sm mt-1">Currently pursuing: CompTIA Security+</p>
-              </div>
-
-              <div className="mt-auto pt-8 border-t border-border/50">
-                <p className="text-text-secondary text-sm mb-1">Based in Delhi, India</p>
-                <p className="text-text-secondary text-sm mb-1">Open to: On-site · Hybrid · Remote</p>
-                <p className="text-accent text-sm mt-2">Available: Immediately on graduation</p>
+              <div className="mt-auto pt-6 border-t border-border/50 text-xs font-mono text-text-muted">
+                <div>Location: Delhi, India</div>
+                <div className="mt-1">Availability: Fresher, available immediately</div>
               </div>
             </div>
           </motion.div>

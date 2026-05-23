@@ -4,7 +4,6 @@ import Hero from '../components/sections/Hero';
 import Stats from '../components/sections/Stats';
 import About from '../components/sections/About';
 import ProjectsPreview from '../components/sections/ProjectsPreview';
-import Experience from '../components/sections/Experience';
 import Skills from '../components/sections/Skills';
 import TryHackMe from '../components/sections/TryHackMe';
 import Contact from '../components/sections/Contact';
@@ -18,14 +17,13 @@ export default function Home() {
       transition={{ duration: 0.5 }}
     >
       <Helmet>
-        <title>Yash Gulati — Security Analyst & Tool Builder</title>
+        <title>Yash Gulati — Cybersecurity Analyst | Offensive Security & AppSec</title>
       </Helmet>
 
       <Hero />
       <Stats />
       <About />
       <ProjectsPreview />
-      <Experience />
       <Skills />
       <TryHackMe />
       <Contact />

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Mail, FileDown } from 'lucide-react';
 import Badge from '../ui/Badge';
 import { useTryHackMe } from '../../hooks/useTryHackMe';
 
@@ -11,7 +12,7 @@ export default function Hero() {
   const { stats } = useTryHackMe();
 
   const terminalLines = useMemo(() => [
-    { prompt: '$ whoami', output: '> yash gulati — security analyst & tool builder' },
+    { prompt: '$ whoami', output: '> yash gulati — cybersecurity analyst | offensive security & appsec' },
     { prompt: '$ ls ./tools', output: '> airtrace  netra  enchat  simlock  dualauth  keyscope  entropyx' },
     { prompt: '$ cat stats.json', output: `> { "tryhackme_rank": "${stats.rank === 'Top 2%' ? 'top_2_percent' : stats.rank}",\n    "rooms_completed": ${stats.roomsCompleted},\n    "tools_built": 7,\n    "beta_users": "100+" }` },
     { prompt: '$ cat ./skills | grep proficient', output: '> python  burpsuite  wireshark  splunk  nmap  nessus  kali' }
@@ -59,22 +60,18 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-[64px] leading-[1.1] text-text-primary text-balance"
+            className="text-3xl md:text-[50px] leading-[1.2] text-text-primary text-balance font-syne font-bold"
           >
-            Security analyst.<br />
-            Tool builder.<br />
-            Top 2% globally.
+            Yash Gulati — <span className="text-accent">Cybersecurity Analyst</span> | Offensive Security & AppSec
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-text-secondary max-w-xl"
+            className="text-lg font-medium text-text-primary border-l-2 border-accent pl-4 py-1 max-w-xl"
           >
-            Final-year student at University of Delhi building offensive security
-            tools, finding real vulnerabilities, and solving SOC labs before most
-            people finish their morning coffee.
+            Seeking SOC Analyst and Application Security Engineer roles (Fresher, available immediately).
           </motion.p>
           
           <motion.p
@@ -83,27 +80,29 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.25 }}
             className="text-sm font-mono text-text-muted"
           >
-            Google Cybersecurity Certified · CNSP · {stats.roomsCompleted} TryHackMe rooms.
+            Google Cybersecurity Professional Certificate · CNSP · Top 2% globally on TryHackMe
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-wrap gap-4 mt-2"
+            className="flex flex-wrap gap-4 mt-4"
           >
-            <Link
-              to="/projects"
-              className="bg-accent text-accent-text px-6 py-3 rounded-md font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"
-            >
-              View my work ↓
-            </Link>
             <a
               href="/resume.pdf"
               download
-              className="bg-bg-secondary text-text-primary px-6 py-3 rounded-md font-bold hover:bg-bg-card border border-border hover:border-border-hover transition-all"
+              className="bg-accent text-accent-text px-6 py-3.5 rounded-md font-bold hover:bg-accent/90 transition-colors flex items-center gap-2 text-base shadow-lg shadow-accent/20"
             >
+              <FileDown size={18} />
               Download Resume
+            </a>
+            <a
+              href="mailto:contactyashgulati@gmail.com"
+              className="bg-bg-secondary text-text-primary px-6 py-3.5 rounded-md font-bold hover:bg-bg-card border border-border hover:border-border-hover transition-all flex items-center gap-2 text-base"
+            >
+              <Mail size={18} />
+              contactyashgulati@gmail.com
             </a>
           </motion.div>
         </div>

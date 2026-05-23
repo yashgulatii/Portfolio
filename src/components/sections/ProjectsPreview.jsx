@@ -4,8 +4,11 @@ import ProjectCard from '../ui/ProjectCard';
 import { projects } from '../../data/projects';
 
 export default function ProjectsPreview() {
-  // Show only top 3 featured projects
-  const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
+  // Pinned Campus Track
+  const campusTrack = projects.find(p => p.id === 'campus-track');
+  
+  // Other featured projects (Airtrace, Netra, EnChat, etc.)
+  const otherFeatured = projects.filter(p => p.featured && p.id !== 'campus-track');
 
   return (
     <section className="py-32 bg-bg-secondary">
@@ -22,19 +25,34 @@ export default function ProjectsPreview() {
           />
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredProjects.map((project, index) => (
+        <div className="flex flex-col gap-10">
+          {/* Pinned Showcase Card */}
+          {campusTrack && (
             <motion.div
-              key={project.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="h-full"
+              className="w-full"
             >
-              <ProjectCard project={project} featured={true} />
+              <ProjectCard project={campusTrack} featured={true} />
             </motion.div>
-          ))}
+          )}
+
+          {/* Other Featured Tools */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {otherFeatured.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="h-full"
+              >
+                <ProjectCard project={project} featured={true} />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

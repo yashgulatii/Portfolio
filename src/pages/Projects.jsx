@@ -68,6 +68,7 @@ export default function Projects() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
+                className={project.id === 'campus-track' ? 'md:col-span-2 lg:col-span-3 w-full' : ''}
               >
                 <ProjectCard project={project} featured={false} />
               </motion.div>

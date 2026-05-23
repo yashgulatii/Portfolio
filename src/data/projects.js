@@ -1,56 +1,79 @@
 export const projects = [
   {
     id: "campus-track",
-    title: "Campus Track",
+    title: "Campus Track — College Management System",
     category: "Full-stack",
-    stack: ["Flutter", "Firebase", "Python Flask", "SQLite"],
-    description: "Cross-platform academic management system deployed on a live Ubuntu server with 100+ beta users. Identified and patched a real IDOR vulnerability in the file access endpoint during development.",
-    fullDescription: "Built a complete cross-platform academic management system with a full REST API, Firebase Auth, role-based access control, and bulk CSV import. Successfully identified and patched a real IDOR vulnerability in the file access endpoint during development.",
+    stack: ["Flutter", "Flask", "Firebase Auth + Firestore"],
+    description: "Cross-platform academic management system deployed with systemd + Gunicorn; tested via ngrok tunneling, with 100+ beta users across college departments. Discovered and documented a real Broken Access Control vulnerability during self-audit.",
+    fullDescription: "Campus Track is a complete cross-platform academic management system co-developed and audited from a security perspective. Successfully deployed on a production-like environment with systemd + Gunicorn, with 100+ active beta users across college departments. During a self-audit of the codebase, discovered and documented a real Broken Access Control vulnerability.",
+    vulnerability: {
+      title: "Role Boundary Bypass (Broken Access Control)",
+      details: "A student-role user could escalate to teacher or admin by modifying the URL path. The server performed no server-side role validation, granting full account access including write permissions across all role boundaries.",
+      cvss: "8.9",
+      rating: "High",
+      vector: "AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:N"
+    },
+    features: [
+      "Role-based access control",
+      "Bulk CSV import",
+      "File storage",
+      "Real-time Firestore sync with SQLite buffer"
+    ],
+    deployment: "systemd + Gunicorn; tested via ngrok tunneling",
+    users: "100+ beta users across college departments",
     keyLearning: "Production deployment, REST API security, and real-world vulnerability patching.",
     github: "https://github.com/yashgulatii",
     featured: true
-  },
-  {
-    id: "netra",
-    title: "Netra — Network Scanner",
-    category: "Network",
-    stack: ["Python", "Scapy", "Nmap"],
-    description: "Host discovery and port scanning tool built to understand network enumeration from first principles. Supports subnet sweeps and service fingerprinting.",
-    fullDescription: "A custom network scanner built with Python and Scapy. Features host discovery, port scanning, and service fingerprinting to deeply understand network enumeration from first principles.",
-    keyLearning: "Network protocols, raw socket programming, and packet manipulation.",
-    github: "https://github.com/yashgulatii",
-    featured: true
-  },
-  {
-    id: "enchat",
-    title: "EnChat — Encrypted Chat",
-    category: "Cryptography",
-    stack: ["Python", "AES-256", "Socket"],
-    description: "End-to-end encrypted chat application with AES-256 encryption. Built to understand secure comms protocols and key exchange at the implementation level.",
-    fullDescription: "A secure terminal-based chat application implementing AES-256 end-to-end encryption. Built to thoroughly understand secure communication protocols and key exchange mechanisms at the implementation level.",
-    keyLearning: "Cryptography implementations, socket programming, and secure communication.",
-    github: "https://github.com/yashgulatii",
-    featured: true
-  },
-  {
-    id: "dualauth",
-    title: "DualAuth",
-    category: "Defensive",
-    stack: ["Python", "TOTP"],
-    description: "Two-factor authentication system",
-    fullDescription: "A two-factor authentication (2FA) module leveraging TOTP (Time-based One-Time Password) algorithms. Designed to integrate with existing authentication flows to enhance security.",
-    keyLearning: "Authentication frameworks, TOTP algorithm mechanics, and security hardening.",
-    github: "https://github.com/yashgulatii",
-    featured: false
   },
   {
     id: "airtrace",
     title: "Airtrace",
     category: "Network",
     stack: ["Python"],
-    description: "Passive network traffic analyser",
-    fullDescription: "A passive network traffic analysis tool that captures and parses network packets to identify potential anomalies or unauthorized data exfiltration.",
-    keyLearning: "Traffic analysis, packet sniffing, and network forensics.",
+    description: "WiFi network scanner — detects and lists nearby access points with signal strength and encryption type.",
+    fullDescription: "WiFi network scanner — detects and lists nearby access points with signal strength and encryption type.",
+    github: "https://github.com/yashgulatii",
+    featured: true
+  },
+  {
+    id: "netra",
+    title: "Netra",
+    category: "Network",
+    stack: ["Python"],
+    description: "Python-based network scanner — performs host discovery and open port enumeration.",
+    fullDescription: "Python-based network scanner — performs host discovery and open port enumeration.",
+    github: "https://github.com/yashgulatii",
+    featured: true
+  },
+  {
+    id: "enchat",
+    title: "EnChat",
+    category: "Cryptography",
+    stack: ["Python"],
+    description: "CLI chat tool with end-to-end encryption implemented from scratch using Python.",
+    fullDescription: "CLI chat tool with end-to-end encryption implemented from scratch using Python.",
+    github: "https://github.com/yashgulatii",
+    featured: true
+  },
+  {
+    id: "simlock",
+    title: "SimLock",
+    category: "Defensive",
+    stack: ["Python"],
+    description: "Ransomware behaviour simulator built for controlled lab environments — demonstrates file encryption and ransom note delivery.",
+    fullDescription: "Ransomware behaviour simulator built for controlled lab environments — demonstrates file encryption and ransom note delivery.",
+    warning: "Built for educational use in isolated lab environments.",
+    github: "https://github.com/yashgulatii",
+    featured: false
+  },
+  {
+    id: "dualauth",
+    title: "DualAuth",
+    category: "Defensive",
+    stack: ["Python"],
+    description: "SQL injection simulation tool — demonstrates authentication bypass via unsanitised query inputs.",
+    fullDescription: "SQL injection simulation tool — demonstrates authentication bypass via unsanitised query inputs.",
+    warning: "Built for educational use in isolated lab environments.",
     github: "https://github.com/yashgulatii",
     featured: false
   },
@@ -59,20 +82,9 @@ export const projects = [
     title: "KeyScope",
     category: "Offensive",
     stack: ["Python"],
-    description: "Keylogger for forensic analysis and detection research",
-    fullDescription: "An experimental keylogger developed strictly for forensic analysis and detection research, demonstrating how user input can be intercepted at the OS level.",
-    keyLearning: "OS-level hooking, malware behavior, and threat detection mechanisms.",
-    github: "https://github.com/yashgulatii",
-    featured: false
-  },
-  {
-    id: "simlock",
-    title: "SimLock",
-    category: "Defensive",
-    stack: ["Python"],
-    description: "SIM lock bypass detection and analysis tool",
-    fullDescription: "A defensive tool designed to detect and analyze attempts to bypass SIM locks on mobile devices, providing insights into physical device security.",
-    keyLearning: "Hardware security, bypass techniques, and threat modeling.",
+    description: "Educational keylogger built in Python for security research and awareness demonstrations.",
+    fullDescription: "Educational keylogger built in Python for security research and awareness demonstrations.",
+    warning: "Built for educational use in isolated lab environments.",
     github: "https://github.com/yashgulatii",
     featured: false
   },
@@ -81,9 +93,8 @@ export const projects = [
     title: "EntropyX",
     category: "Cryptography",
     stack: ["Python"],
-    description: "Entropy-based file analysis for detecting encrypted/packed malware",
-    fullDescription: "A security utility that performs Shannon entropy analysis on files to detect packed executables or encrypted payloads typically associated with malware.",
-    keyLearning: "Malware analysis, statistical entropy calculation, and binary inspection.",
+    description: "Password generator with real-time entropy scoring to evaluate password strength.",
+    fullDescription: "Password generator with real-time entropy scoring to evaluate password strength.",
     github: "https://github.com/yashgulatii",
     featured: false
   }
