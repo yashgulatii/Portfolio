@@ -22,7 +22,9 @@ export const projects = [
     deployment: "systemd + Gunicorn; tested via ngrok tunneling",
     users: "100+ beta users across college departments",
     keyLearning: "Production deployment, REST API security, and real-world vulnerability patching.",
-    github: "https://github.com/yashgulatii",
+    github: null,
+    live: "https://campus-project.pages.dev/",
+    liveLabel: "View Live Site",
     featured: true
   },
   {
@@ -32,7 +34,7 @@ export const projects = [
     stack: ["Python"],
     description: "WiFi network scanner — detects and lists nearby access points with signal strength and encryption type.",
     fullDescription: "WiFi network scanner — detects and lists nearby access points with signal strength and encryption type.",
-    github: "https://github.com/yashgulatii",
+    github: "https://github.com/yashgulatii/Airtrace",
     featured: true
   },
   {
@@ -42,7 +44,7 @@ export const projects = [
     stack: ["Python"],
     description: "Python-based network scanner — performs host discovery and open port enumeration.",
     fullDescription: "Python-based network scanner — performs host discovery and open port enumeration.",
-    github: "https://github.com/yashgulatii",
+    github: "https://github.com/yashgulatii/Netra",
     featured: true
   },
   {
@@ -52,7 +54,7 @@ export const projects = [
     stack: ["Python"],
     description: "CLI chat tool with end-to-end encryption implemented from scratch using Python.",
     fullDescription: "CLI chat tool with end-to-end encryption implemented from scratch using Python.",
-    github: "https://github.com/yashgulatii",
+    github: "https://github.com/yashgulatii/EnChat",
     featured: true
   },
   {
@@ -63,7 +65,7 @@ export const projects = [
     description: "Ransomware behaviour simulator built for controlled lab environments — demonstrates file encryption and ransom note delivery.",
     fullDescription: "Ransomware behaviour simulator built for controlled lab environments — demonstrates file encryption and ransom note delivery.",
     warning: "Built for educational use in isolated lab environments.",
-    github: "https://github.com/yashgulatii",
+    github: "https://github.com/yashgulatii/SimLock",
     featured: false
   },
   {
@@ -74,7 +76,7 @@ export const projects = [
     description: "SQL injection simulation tool — demonstrates authentication bypass via unsanitised query inputs.",
     fullDescription: "SQL injection simulation tool — demonstrates authentication bypass via unsanitised query inputs.",
     warning: "Built for educational use in isolated lab environments.",
-    github: "https://github.com/yashgulatii",
+    github: "https://github.com/yashgulatii/DualAuth",
     featured: false
   },
   {
@@ -85,7 +87,7 @@ export const projects = [
     description: "Educational keylogger built in Python for security research and awareness demonstrations.",
     fullDescription: "Educational keylogger built in Python for security research and awareness demonstrations.",
     warning: "Built for educational use in isolated lab environments.",
-    github: "https://github.com/yashgulatii",
+    github: "https://github.com/yashgulatii/KeyScope",
     featured: false
   },
   {
@@ -95,7 +97,7 @@ export const projects = [
     stack: ["Python"],
     description: "Password generator with real-time entropy scoring to evaluate password strength.",
     fullDescription: "Password generator with real-time entropy scoring to evaluate password strength.",
-    github: "https://github.com/yashgulatii",
+    github: "https://github.com/yashgulatii/EntropyX",
     featured: false
   }
 ];

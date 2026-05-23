@@ -1,5 +1,6 @@
 import { GithubIcon } from './Icons';
 import Badge from './Badge';
+import { ExternalLink } from 'lucide-react';
 
 export default function ProjectCard({ project, featured = false }) {
   // Pinned Campus Track custom premium layout
@@ -81,9 +82,9 @@ export default function ProjectCard({ project, featured = false }) {
           </ul>
         </div>
 
-        {/* Card Footer: GitHub Link / Private Repo */}
-        <div className="flex items-center justify-between gap-4 mt-auto pt-6 border-t border-border/50">
-          {project.github ? (
+        {/* Card Footer: GitHub / Live links */}
+        <div className="flex items-center gap-6 mt-auto pt-6 border-t border-border/50">
+          {project.github && (
             <a
               href={project.github}
               target="_blank"
@@ -93,7 +94,19 @@ export default function ProjectCard({ project, featured = false }) {
               <GithubIcon size={18} />
               View on GitHub
             </a>
-          ) : (
+          )}
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors font-bold"
+            >
+              <ExternalLink size={18} />
+              {project.liveLabel || 'View Live Site'}
+            </a>
+          )}
+          {!project.github && !project.live && (
             <span className="flex items-center gap-2 text-sm text-text-muted font-mono font-medium">
               Private Repository
             </span>
@@ -133,18 +146,31 @@ export default function ProjectCard({ project, featured = false }) {
         </p>
       )}
 
-      <div className="flex items-center gap-4 mt-auto pt-4 border-t border-border/50">
-        {project.github ? (
+      {/* Card Footer: GitHub / Live links */}
+      <div className="flex flex-wrap items-center gap-6 mt-auto pt-4 border-t border-border/50">
+        {project.github && (
           <a
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-text-secondary hover:text-accent transition-colors"
+            className="flex items-center gap-2 text-sm text-text-secondary hover:text-accent transition-colors font-semibold"
           >
             <GithubIcon size={16} />
             {featured ? 'View Source' : 'View on GitHub'}
           </a>
-        ) : (
+        )}
+        {project.live && (
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors font-semibold"
+          >
+            <ExternalLink size={16} />
+            {project.liveLabel || 'View Live Site'}
+          </a>
+        )}
+        {!project.github && !project.live && (
           <span className="flex items-center gap-2 text-sm text-text-muted font-mono">
             Private Repository
           </span>

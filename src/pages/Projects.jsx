@@ -20,7 +20,7 @@ export default function Projects() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen pt-32 pb-24"
+      className="min-h-screen pt-32 pb-0"
     >
       <Helmet>
         <title>Projects — Yash Gulati</title>

@@ -73,15 +73,7 @@ export default function Hero() {
           >
             Seeking SOC Analyst and Application Security Engineer roles (Fresher, available immediately).
           </motion.p>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-sm font-mono text-text-muted"
-          >
-            Google Cybersecurity Professional Certificate · CNSP · Top 2% globally on TryHackMe
-          </motion.p>
+
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
