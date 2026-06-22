@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
 import { Mail, FileDown } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from '../ui/Icons';
+import { Link } from 'react-router-dom';
+
+const MotionLink = motion(Link);
+
 
 export default function Contact() {
   const links = [
@@ -34,10 +38,9 @@ export default function Contact() {
     },
     {
       name: 'Resume',
-      value: '↓ PDF',
+      value: 'View PDF',
       icon: <FileDown size={24} />,
-      href: '/resume.pdf',
-      download: true
+      to: '/resume'
     }
   ];
 
@@ -59,28 +62,37 @@ export default function Contact() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {links.map((link, index) => (
-            <motion.a
-              key={link.name}
-              href={link.href}
-              target={link.download ? undefined : "_blank"}
-              rel={link.download ? undefined : "noopener noreferrer"}
-              download={link.download}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-bg-card border border-border hover:border-accent hover:bg-accent-dim p-6 rounded-2xl flex flex-col items-center justify-center gap-4 transition-all hover:-translate-y-1 group"
-            >
-              <div className="text-text-secondary group-hover:text-accent transition-colors">
-                {link.icon}
-              </div>
-              <div className="text-center">
-                <div className="text-text-primary font-bold text-sm mb-1">{link.name}</div>
-                <div className="text-text-muted text-xs truncate max-w-full">{link.value}</div>
-              </div>
-            </motion.a>
-          ))}
+          {links.map((link, index) => {
+            const isInternal = !!link.to;
+            const Component = isInternal ? MotionLink : motion.a;
+            const linkProps = isInternal
+              ? { to: link.to }
+              : {
+                  href: link.href,
+                  target: "_blank",
+                  rel: "noopener noreferrer"
+                };
+
+            return (
+              <Component
+                key={link.name}
+                {...linkProps}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-bg-card border border-border hover:border-accent hover:bg-accent-dim p-6 rounded-2xl flex flex-col items-center justify-center gap-4 transition-all hover:-translate-y-1 group cursor-pointer"
+              >
+                <div className="text-text-secondary group-hover:text-accent transition-colors">
+                  {link.icon}
+                </div>
+                <div className="text-center">
+                  <div className="text-text-primary font-bold text-sm mb-1">{link.name}</div>
+                  <div className="text-text-muted text-xs truncate max-w-full">{link.value}</div>
+                </div>
+              </Component>
+            );
+          })}
         </div>
       </div>
     </section>

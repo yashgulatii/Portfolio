@@ -81,14 +81,13 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-wrap gap-4 mt-4"
           >
-            <a
-              href="/resume.pdf"
-              download
+            <Link
+              to="/resume"
               className="bg-accent text-accent-text px-6 py-3.5 rounded-md font-bold hover:bg-accent/90 transition-colors flex items-center gap-2 text-base shadow-lg shadow-accent/20"
             >
               <FileDown size={18} />
-              Download Resume
-            </a>
+              View Resume
+            </Link>
             <a
               href="mailto:contactyashgulati@gmail.com"
               className="bg-bg-secondary text-text-primary px-6 py-3.5 rounded-md font-bold hover:bg-bg-card border border-border hover:border-border-hover transition-all flex items-center gap-2 text-base"
