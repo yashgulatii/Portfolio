@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F3EFE3"/>
+  <path d="M72 0v630" stroke="#C62828" stroke-opacity=".45"/>
+  <g stroke="#BFD3DE" stroke-opacity=".55" stroke-width="1">
+    <path d="M0 24h1200M0 48h1200M0 72h1200M0 96h1200M0 120h1200M0 144h1200M0 168h1200M0 192h1200M0 216h1200M0 240h1200M0 264h1200M0 288h1200M0 312h1200M0 336h1200M0 360h1200M0 384h1200M0 408h1200M0 432h1200M0 456h1200M0 480h1200M0 504h1200M0 528h1200M0 552h1200M0 576h1200M0 600h1200"/>
+    <path d="M24 0v630M48 0v630M72 0v630M96 0v630M120 0v630M144 0v630M168 0v630M192 0v630M216 0v630M240 0v630M264 0v630M288 0v630M312 0v630M336 0v630M360 0v630M384 0v630M408 0v630M432 0v630M456 0v630M480 0v630M504 0v630M528 0v630M552 0v630M576 0v630M600 0v630M624 0v630M648 0v630M672 0v630M696 0v630M720 0v630M744 0v630M768 0v630M792 0v630M816 0v630M840 0v630M864 0v630M888 0v630M912 0v630M936 0v630M960 0v630M984 0v630M1008 0v630M1032 0v630M1056 0v630M1080 0v630M1104 0v630M1128 0v630M1152 0v630M1176 0v630"/>
+  </g>
+  <rect x="164" y="146" width="850" height="335" fill="#F3EFE3" stroke="#8FB0C4" stroke-width="2"/>
+  <text x="204" y="212" font-family="monospace" font-size="20" letter-spacing="3" fill="#2B2B2B">FIELD NOTE / SECURITY PORTFOLIO</text>
+  <text x="204" y="310" font-family="sans-serif" font-size="64" font-weight="700" fill="#2B2B2B">Yash Gulati</text>
+  <text x="204" y="372" font-family="sans-serif" font-size="30" fill="#2B2B2B">Defend first, then break it</text>
+  <text x="204" y="437" font-family="monospace" font-size="18" letter-spacing="2" fill="#1D3FB8">DELHI · SECURITY LABS · ELECTRONICS</text>
+</svg>
