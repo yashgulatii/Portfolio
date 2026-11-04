@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import RoughScene from "./components/RoughScene";
-import SerialMonitor from "./components/SerialMonitor";
 import ElectronicsSticker from "./components/ElectronicsSticker";
+import PageShell from "./components/PageShell";
+import ProfileCard from "./components/ProfileCard";
 import { site } from "./content/site";
 import type { SiteSectionId } from "./content/site";
-import { getVisibleSectionIds, hasContent } from "./content/visible-sections";
+import { getVisibleSectionIds } from "./content/visible-sections";
 
 const sectionStickers = {
   about: "resistor",
@@ -39,7 +41,6 @@ const sampleLog: ProbeLog = {
   windowDays: 7,
   entries: [],
 };
-const colors = site.content.tabColors;
 const labels = site.content.labels;
 function stripMarkup(value: string) {
   return value.replace(/<[^>]*>/g, "").replace(/[\u0000-\u001f\u007f]/g, "").trim();
@@ -68,7 +69,6 @@ function sectionTitle(id: SiteSectionId) {
 function App() {
   const [log, setLog] = useState<ProbeLog | null>(import.meta.env.DEV ? sampleLog : null);
   const [logError, setLogError] = useState(false);
-  const [serialOpen, setSerialOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const [active, setActive] = useState<SiteSectionId | null>(null);
@@ -106,24 +106,22 @@ function App() {
     return getVisibleSectionIds(import.meta.env.DEV || productionLogVisible)
       .map((id) => ({ id, title: sectionTitle(id) }));
   }, [productionLogVisible]);
-  const tabs = useMemo(
-    () =>
-      sections.map((section, index) => ({
-        ...section,
-        color: colors[index % colors.length],
-      })),
-    [sections],
-  );
 
   useEffect(() => {
     if (!sections.length) return;
-    setActive((current) => sections.some((section) => section.id === current) ? current : sections[0].id);
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (visible) setActive(visible.target.id as SiteSectionId);
+        if (visible) {
+          setActive(visible.target.id as SiteSectionId);
+        } else {
+          const firstSection = document.getElementById(sections[0]?.id);
+          if (firstSection && firstSection.getBoundingClientRect().top > 0) {
+            setActive(null);
+          }
+        }
       },
       { rootMargin: "-20% 0px -65% 0px", threshold: 0 },
     );
@@ -147,148 +145,163 @@ function App() {
     }
   }
 
-  return (
-    <>
-      <a className="plain-skip" href="/plain">{labels.plainLink}</a>
-      <header className="cover" aria-label={site.identity.name}>
-        <div className="cover-paper">
-          <p className="cover-kicker">{labels.subjectLabel}</p>
-          <h1>{site.identity.name}</h1>
-          <p className="cover-subject">{site.identity.subject}</p>
-          <p className="cover-intro">{site.identity.intro}</p>
-          {site.identity.rolesSought.length > 0 && (
-            <p className="cover-roles">{site.identity.rolesSought.join(" · ")}</p>
+  const coverHeader = (
+    <header className="cover" aria-label={site.identity.name}>
+      <div className="cover-paper">
+        <p className="cover-kicker">{labels.subjectLabel}</p>
+        <h1>{site.identity.name}</h1>
+        <p className="cover-subject">{site.identity.subject}</p>
+        <p className="cover-intro">{site.identity.intro}</p>
+        {site.identity.rolesSought.length > 0 && (
+          <p className="cover-roles">{site.identity.rolesSought.join(" · ")}</p>
+        )}
+        <div className="cover-meta">
+          {site.identity.city && <span>{site.identity.city}</span>}
+          {site.identity.openToCities.length > 0 && (
+            <span>{labels.openTo}: {site.identity.openToCities.join(" · ")}</span>
           )}
-          <div className="cover-meta">
-            {site.identity.city && <span>{site.identity.city}</span>}
-            {site.identity.openToCities.length > 0 && (
-              <span>{labels.openTo}: {site.identity.openToCities.join(" · ")}</span>
-            )}
-          </div>
-          <div className="cover-actions">
-            <a className="plain-link" href="/plain">{labels.plainLink}</a>
-            <button className="serial-open" type="button" onClick={() => setSerialOpen(true)}>
-              {labels.serialHint}
-            </button>
-          </div>
         </div>
-      </header>
-
-      <nav className="index-tabs" aria-label={labels.work}>
-        {tabs.map((tab, index) => (
-          <a
-            className={`index-tab index-tab--${tab.color}${active === tab.id ? " is-active" : ""}`}
-            href={`#${tab.id}`}
-            key={tab.id}
-            aria-current={active === tab.id ? "location" : undefined}
-          >
-            <span className="tab-number">{String(index + 1).padStart(2, "0")}</span>
-            <span>{tab.title}</span>
+        <div className="cover-actions">
+          <Link to="/resume" style={{
+            minHeight: '48px',
+            padding: '0 16px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            border: '1px solid rgba(43,43,43,.55)',
+            background: 'transparent',
+            font: '500 14px/1.5 var(--mono)',
+            textDecoration: 'none',
+            color: 'inherit'
+          }}>
+            Resume
+          </Link>
+          <Link to="/projects" style={{
+            minHeight: '48px',
+            padding: '0 16px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            border: '1px solid rgba(43,43,43,.55)',
+            background: 'transparent',
+            font: '500 14px/1.5 var(--mono)',
+            textDecoration: 'none',
+            color: 'inherit'
+          }}>
+            Projects
+          </Link>
+          <a href="#contact" style={{
+            minHeight: '48px',
+            padding: '0 16px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            border: '1px solid rgba(43,43,43,.55)',
+            background: 'transparent',
+            font: '500 14px/1.5 var(--mono)',
+            textDecoration: 'none',
+            color: 'inherit'
+          }}>
+            Contact
           </a>
-        ))}
-      </nav>
-
-      <main className="notebook">
-        {sections.map((section, index) => (
-          <section className={`notebook-section notebook-section--${section.id}`} id={section.id} key={section.id}>
-            <p className="section-number">{labels.sectionNumber} {String(index + 1).padStart(2, "0")}</p>
-            <div className="section-heading">
-              <h2>{section.title}</h2>
-              <ElectronicsSticker
-                kind={sectionStickers[section.id]}
-                note={site.stickers.find((sticker) => sticker.kind === sectionStickers[section.id])?.note ?? ""}
-              />
-            </div>
-            {section.id === "about" && <AboutSection />}
-            {section.id === "work" && <WorkSection />}
-            {section.id === "lab" && <LabSection />}
-            {section.id === "log" && (
-              <LogSection
-                log={import.meta.env.DEV ? sampleLog : log}
-                error={logError}
-                sample={import.meta.env.DEV}
-                visible={productionLogVisible}
-              />
-            )}
-            {section.id === "contact" && (
-              <ContactSection copied={copied} copyError={copyError} onCopy={copyEmail} />
-            )}
-          </section>
-        ))}
-        <footer className="notebook-footer">
-          <p>{labels.footer}</p>
-          <button className="serial-open" type="button" onClick={() => setSerialOpen(true)}>
-            {labels.openSerial}
+          <button
+            className="serial-open"
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("open-serial"))}
+          >
+            {labels.serialHint}
           </button>
-        </footer>
-      </main>
-      {serialOpen && (
-        <SerialMonitor
-          onClose={() => setSerialOpen(false)}
-          visibleSections={sections.map((section) => section.id)}
-        />
-      )}
-    </>
-  );
-}
-
-function AboutSection() {
-  const internship = site.internship;
-  return (
-    <div className="about-grid">
-      {site.education.length > 0 && (
-        <article className="paper-card">
-          <h3>{labels.aboutEducation}</h3>
-          {site.education.map((item) => (
-            <div className="fact-row" key={`${item.degree}-${item.school}`}>
-              <strong>{item.degree}</strong>
-              <span>{item.school}</span>
-              {item.year && <span>{item.year}</span>}
-            </div>
-          ))}
-        </article>
-      )}
-      {hasContent(internship) && (
-        <article className="paper-card">
-          <h3>{labels.internshipLabel}</h3>
-          {internship.org && <p><strong>{labels.organization}:</strong> {internship.org}</p>}
-          {internship.program && <p><strong>{labels.program}:</strong> {internship.program}</p>}
-          {internship.title && <p><strong>{labels.role}:</strong> {internship.title}</p>}
-          {internship.dates && <p><strong>{labels.status}:</strong> {internship.dates}</p>}
-        </article>
-      )}
-    </div>
-  );
-}
-
-function WorkSection() {
-  return (
-    <>
-      <p className="section-intro">{labels.workIntro}</p>
-      <div className="experiment-list">
-        {site.tools.map((tool) => (
-          <article className="experiment-card" key={tool.name}>
-            <p className="experiment-number">{labels.experimentPrefix} {String(tool.n).padStart(2, "0")}</p>
-            <h3>{tool.name}</h3>
-            {tool.aim && <p><strong>{labels.aim}:</strong> {tool.aim}</p>}
-            {tool.result && <p><strong>{labels.result}:</strong> {tool.result}</p>}
-            {tool.repo && <a href={tool.repo} target="_blank" rel="noreferrer">{labels.repo}</a>}
-          </article>
-        ))}
-        {site.completed.map((project) => (
-          <article className="experiment-card experiment-card--complete" key={project.name}>
-            <p className="experiment-number">{labels.complete}</p>
-            <h3>{project.name}</h3>
-            {project.aim && <p><strong>{labels.aim}:</strong> {project.aim}</p>}
-            {project.role && <p><strong>{labels.role}:</strong> {project.role}</p>}
-            {project.stack && <p><strong>{labels.stack}:</strong> {project.stack}</p>}
-            {project.publishFinding && project.finding && (
-              <p><strong>{labels.finding}:</strong> {project.finding}</p>
-            )}
-          </article>
-        ))}
+        </div>
       </div>
-    </>
+    </header>
+  );
+
+  return (
+    <PageShell activeSection={active} beforeMain={coverHeader}>
+      <HomeAboutSection />
+      {sections.map((section) => (
+        <section className={`notebook-section notebook-section--${section.id}`} id={section.id} key={section.id}>
+          <div className="section-heading">
+            <h2>{section.title}</h2>
+            <ElectronicsSticker
+              kind={sectionStickers[section.id]}
+              note={site.stickers.find((sticker) => sticker.kind === sectionStickers[section.id])?.note ?? ""}
+            />
+          </div>
+          {section.id === "lab" && <LabSection />}
+          {section.id === "log" && (
+            <LogSection
+              log={import.meta.env.DEV ? sampleLog : log}
+              error={logError}
+              sample={import.meta.env.DEV}
+              visible={productionLogVisible}
+            />
+          )}
+          {section.id === "contact" && (
+            <ContactSection copied={copied} copyError={copyError} onCopy={copyEmail} />
+          )}
+        </section>
+      ))}
+    </PageShell>
+  );
+}
+
+function HomeAboutSection() {
+  const story = site.about.story?.[0];
+  const education = site.education[0];
+  const hasEducation = Boolean(
+    education && (education.degree || education.school || education.years),
+  );
+  const hasInternship = Boolean(
+    site.internship &&
+    (site.internship.title || site.internship.org || site.internship.program || site.internship.dates),
+  );
+  const hasCertifications = Boolean(
+    site.certifications.some((cert) => (
+      Boolean(cert.name) || Boolean(cert.issuer) || Boolean(cert.year)
+    )) || site.nextCerts,
+  );
+
+  return (
+    <section className="notebook-section notebook-section--about-summary">
+      <div className="section-heading">
+        <h2>{labels.about}</h2>
+        <ElectronicsSticker
+          kind="resistor"
+          note={site.stickers.find((sticker) => sticker.kind === "resistor")?.note ?? ""}
+        />
+      </div>
+      {story && <p className="section-intro">{story}</p>}
+      <div className="about-grid">
+        {hasEducation && education && (
+          <ProfileCard title={labels.aboutEducation}>
+            {education.degree && <p>{education.degree}</p>}
+            {education.school && <p>{education.school}</p>}
+            {education.years && <p>{education.years}</p>}
+          </ProfileCard>
+        )}
+        {hasInternship && (
+          <ProfileCard title={labels.internshipLabel}>
+            {site.internship.title && <p><strong>{labels.role}:</strong> {site.internship.title}</p>}
+            {site.internship.org && <p><strong>{labels.organization}:</strong> {site.internship.org}</p>}
+            {site.internship.program && <p><strong>{labels.program}:</strong> {site.internship.program}</p>}
+            {site.internship.dates && <p><strong>{labels.dates}:</strong> {site.internship.dates}</p>}
+          </ProfileCard>
+        )}
+        {hasCertifications && (
+          <ProfileCard title={labels.certHeading} className="about-summary-card">
+            {site.certifications.map((cert, index) => (
+              (Boolean(cert.name) || Boolean(cert.issuer) || Boolean(cert.year)) && (
+                <p key={`${cert.name}-${index}`}>
+                  {Boolean(cert.name) && <strong>{cert.name}</strong>}
+                  {Boolean(cert.issuer) && <span>, {cert.issuer}</span>}
+                  {Boolean(cert.year) && <span>, {cert.year}</span>}
+                </p>
+              )
+            ))}
+            {site.nextCerts && <p className="margin-note about-next-certs">{site.nextCerts}</p>}
+          </ProfileCard>
+        )}
+      </div>
+      <Link to="/about" className="about-button">{site.ui.aboutMe}</Link>
+    </section>
   );
 }
 
@@ -321,30 +334,6 @@ function LabSection() {
       ) : site.contact.labSite ? (
         <p><a href={site.contact.labSite} target="_blank" rel="noreferrer">{labels.labSiteLabel}</a></p>
       ) : null}
-      <div className="credentials-grid">
-        {site.skills.length > 0 && (
-          <article className="paper-card">
-            <h3>{labels.skills}</h3>
-            <ul className="parts-list">{site.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul>
-          </article>
-        )}
-        {(site.certifications.length > 0 || site.nextCerts) && (
-          <article className="paper-card">
-            <h3>{labels.certHeading}</h3>
-            <ul className="cert-list">
-              {site.certifications.map((cert) => (
-                <li key={cert.name}>
-                  <strong>{cert.name}</strong>
-                  {cert.issuer && <span>{cert.issuer}</span>}
-                  {cert.year && <span>{cert.year}</span>}
-                  {cert.url && <a href={cert.url} target="_blank" rel="noreferrer">{labels.hideLinkLabel}</a>}
-                </li>
-              ))}
-            </ul>
-            {site.nextCerts && <p>{site.nextCerts}</p>}
-          </article>
-        )}
-      </div>
     </>
   );
 }
@@ -400,17 +389,14 @@ function ContactSection({
 }) {
   const { contact } = site;
   const socialItems = site.content.socialLinks.flatMap(({ label, key }) => {
-    const href = contact[key];
-    return href ? [{ label, href }] : [];
+    const href = contact[key as keyof typeof contact];
+    return href && typeof href === "string" ? [{ label, href }] : [];
   });
-  const resumes = contact.resumes.flatMap((resume) => {
-    if (!resume.url) return [];
-    return [
-      <a className="contact-card" href={resume.url} download key={resume.label}>
-        <span>{labels.resumeFile}</span><strong>{resume.label}</strong>
-      </a>,
-    ];
-  });
+  const resumeLink = contact.resumePdf ? (
+    <a className="contact-card" href={contact.resumePdf} download key="resume">
+      <span>Resume (PDF)</span><strong>{contact.resumePdf}</strong>
+    </a>
+  ) : null;
   return (
     <div className="contact-grid">
       {contact.email && (
@@ -438,7 +424,12 @@ function ContactSection({
           <span>{labels.labSiteLabel}</span><strong>{contact.labSite}</strong>
         </a>
       )}
-      {resumes}
+      {contact.labBlog && (
+        <a className="contact-card" href={contact.labBlog} target="_blank" rel="noreferrer">
+          <span>Lab blog</span><strong>{contact.labBlog}</strong>
+        </a>
+      )}
+      {resumeLink}
     </div>
   );
 }

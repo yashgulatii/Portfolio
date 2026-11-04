@@ -4,11 +4,12 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/check-content.mjs && node scripts/generate-plain.mjs",
+    "predev": "node scripts/check-content.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/check-content.mjs && node scripts/generate-plain.mjs --mode production",
+    "prebuild": "node scripts/generate-redirects.mjs && node scripts/check-content.mjs",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "probe-log": "node scripts/update-probe-log.mjs"
   },
   "dependencies": {
     "@fontsource/caveat": "^5.2.6",

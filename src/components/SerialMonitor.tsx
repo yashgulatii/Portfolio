@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { site } from "../content/site";
-import type { SiteSectionId } from "../content/site";
 
-type Props = { onClose: () => void; visibleSections: SiteSectionId[] };
+type Props = { onClose: () => void; visibleSections?: unknown[] };
 type Line = { command?: string; output: string };
 
-export default function SerialMonitor({ onClose, visibleSections }: Props) {
+export default function SerialMonitor({ onClose }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [history, setHistory] = useState<Line[]>([{ output: site.content.labels.serialWelcome }]);
@@ -37,12 +36,12 @@ export default function SerialMonitor({ onClose, visibleSections }: Props) {
       return;
     }
     if (command === site.serial.terminalCommand) {
-      setHistory((current) => [...current, { command, output: site.content.labels.resumeMessage }]);
-      window.location.assign("/plain");
+      setHistory((current) => [...current, { command, output: "opening resume" }]);
+      window.location.assign("/resume");
       onClose();
       return;
     }
-    const output = commandResult(command, visibleSections);
+    const output = commandResult(command);
     setHistory((current) => [...current, { command, output }]);
   }
 
@@ -85,24 +84,21 @@ export default function SerialMonitor({ onClose, visibleSections }: Props) {
   );
 }
 
-function commandResult(command: string, visibleSections: SiteSectionId[]) {
-  const projects = [
-    ...site.tools.map((project) => project.name),
-    ...site.completed.map((project) => project.name),
-  ].join("  ");
+function commandResult(command: string) {
+  const projects = site.tools.map((project) => project.name).join("  ");
   const contacts = [
     site.contact.email && `${site.content.labels.contactEmail}: ${site.contact.email}`,
-    ...site.content.socialLinks.map(({ label, key }) =>
-      site.contact[key] ? `${label}: ${site.contact[key]}` : null,
-    ),
+    ...site.content.socialLinks.map(({ label, key }) => {
+      const value = site.contact[key as keyof typeof site.contact];
+      return value && typeof value === "string" ? `${label}: ${value}` : null;
+    }),
     site.contact.blog && `${site.content.labels.blogLabel}: ${site.contact.blog}`,
     site.contact.labSite && `${site.content.labels.labSiteLabel}: ${site.contact.labSite}`,
-    ...site.contact.resumes.map((resume) =>
-      resume.url ? `${resume.label}: ${resume.url}` : null,
-    ),
+    site.contact.labBlog && `Lab blog: ${site.contact.labBlog}`,
+    site.contact.resumePdf && `Resume: ${site.contact.resumePdf}`,
   ].filter((line): line is string => Boolean(line)).join("\n");
   const availableCommands = site.serial.commands.filter((entry) => {
-    if (entry === site.serial.projectCommand) return site.tools.length + site.completed.length > 0;
+    if (entry === site.serial.projectCommand) return site.tools.length > 0;
     if (entry === site.serial.certCommand) return site.certifications.length > 0;
     if (entry === site.serial.contactCommand) return Boolean(contacts);
     return true;
@@ -113,7 +109,6 @@ function commandResult(command: string, visibleSections: SiteSectionId[]) {
     case site.serial.whoamiCommand:
       return `${site.identity.name}\n${site.identity.subject}\n${site.identity.intro}`;
     case site.serial.listCommand:
-      return visibleSections.map((id) => site.content.labels[id]).join("  ");
     case site.serial.projectCommand:
       return projects;
     case site.serial.certCommand:

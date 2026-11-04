@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import rough from "roughjs";
 import type { RoughSVG } from "roughjs/bin/svg";
 import { site } from "../content/site";
 import type { LabHost } from "../content/site";
@@ -41,16 +42,14 @@ export default function RoughScene({
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting) || drawn.current) return;
         drawn.current = true;
-        void import("roughjs").then(({ default: rough }) => {
-          const svg = svgRef.current;
-          if (!svg) return;
-          const generator = rough.svg(svg);
-          if (mode === "topology") {
-            drawTopology(svg, generator, hosts, domain);
-          } else {
-            drawTallies(svg, generator, counts, labels);
-          }
-        });
+        const svg = svgRef.current;
+        if (!svg) return;
+        const generator = rough.svg(svg);
+        if (mode === "topology") {
+          drawTopology(svg, generator, hosts, domain);
+        } else {
+          drawTallies(svg, generator, counts, labels);
+        }
       },
       { threshold: 0.15 },
     );

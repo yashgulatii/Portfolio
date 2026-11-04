@@ -15,10 +15,11 @@ export function getVisibleSectionIds(showLog: boolean): SiteSectionId[] {
     site.contact.github ||
     site.contact.blog ||
     site.contact.labSite ||
-    site.contact.resumes.some((resume) => resume.url),
+    site.contact.labBlog ||
+    site.contact.resumePdf,
   );
-  if (hasContent(site.education) || hasContent(site.internship)) sections.push("about");
-  if (hasContent(site.tools) || hasContent(site.completed)) sections.push("work");
+  // Home page should only show: lab, log (conditional), and contact
+  // "about" and "work" are now separate routes
   if (hasContent(site.lab)) sections.push("lab");
   if (showLog) sections.push("log");
   if (hasContactMethod) sections.push("contact");
