@@ -13,19 +13,22 @@ Create a production build with `npm run build`; the static site is written to `d
 
 Add identity, project, lab, skill, and contact details in `src/content/site.ts`.
 
-## Updating the log
+## Live request log
 
-The probe log shows 404 requests to non-existent paths over the last 7 days.
+The Cloudflare Pages middleware records request paths after the response is served. A Durable Object keeps five-minute path-count buckets for a rolling seven-day window and pushes updated totals to connected browsers over WebSockets. Query strings, IP addresses, and other visitor details are not stored. The streaming endpoint itself is excluded.
 
-1. Create a Cloudflare API token with Analytics:Read permission for your zone only at https://dash.cloudflare.com/profile/api-tokens
-2. Set environment variables:
-   ```sh
-   export CF_API_TOKEN=your_token_here
-   export CF_ZONE_ID=your_zone_id_here
-   ```
-3. Run `npm run probe-log` to fetch data and update `public/probe-log.json`
-4. Review the output, then commit and push to trigger a Cloudflare Pages redeploy
+Deploy the Durable Object Worker from the repository root:
 
-Use `npm run probe-log -- --dry-run` to preview without writing.
+```sh
+npx wrangler deploy --config workers/live-log/wrangler.toml
+```
+
+Then bind it to the Pages project:
+
+1. In Cloudflare, open **Workers & Pages**, select the Pages project, then open **Settings > Bindings**.
+2. Add a **Durable Object** binding named `LIVE_LOGS` and select the `LiveLogs` namespace from `portfolio-live-log`.
+3. Redeploy the Pages project so its middleware and binding take effect.
+
+The `functions/` directory contains the request middleware and live WebSocket endpoint. The Pages project must deploy with Cloudflare Pages Functions enabled. Local Vite development continues to show sample log data.
 
 The `public/_headers` file contains the deployment security headers.

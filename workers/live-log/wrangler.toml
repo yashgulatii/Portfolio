@@ -1,0 +1,11 @@
+name = "portfolio-live-log"
+main = "src/index.js"
+compatibility_date = "2026-11-04"
+
+[[durable_objects.bindings]]
+name = "LIVE_LOGS"
+class_name = "LiveLogs"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["LiveLogs"]

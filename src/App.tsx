@@ -69,6 +69,7 @@ function sectionTitle(id: SiteSectionId) {
 function App() {
   const [log, setLog] = useState<ProbeLog | null>(import.meta.env.DEV ? sampleLog : null);
   const [logError, setLogError] = useState(false);
+  const [logConnected, setLogConnected] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const [active, setActive] = useState<SiteSectionId | null>(null);
@@ -76,33 +77,57 @@ function App() {
   useEffect(() => {
     if (import.meta.env.DEV) return;
     let cancelled = false;
-    fetch(site.content.logPath)
-      .then((response) => {
-        if (!response.ok) throw new Error(`Field log request failed with ${response.status}.`);
-        return response.json() as Promise<unknown>;
-      })
-      .then((raw) => {
-        const parsed = validateLog(raw);
+    let socket: WebSocket | null = null;
+    let reconnectTimer: number | undefined;
+
+    function connect() {
+      if (cancelled) return;
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      socket = new WebSocket(`${protocol}//${window.location.host}${site.content.logStreamPath}`);
+      socket.addEventListener("open", () => {
         if (!cancelled) {
-          setLog(parsed);
+          setLogConnected(true);
           setLogError(false);
         }
-      })
-      .catch((error: unknown) => {
+      });
+      socket.addEventListener("message", (event) => {
+        try {
+          const parsed = validateLog(JSON.parse(String(event.data)) as unknown);
+          if (!cancelled) {
+            setLog(parsed);
+            setLogError(false);
+          }
+        } catch (error) {
+          console.error("Live field log could not be validated.", error);
+          if (!cancelled) setLogError(true);
+        }
+      });
+      socket.addEventListener("error", () => {
         if (!cancelled) {
-          console.error("Field log could not be loaded or validated.", error);
+          setLogConnected(false);
           setLogError(true);
         }
       });
+      socket.addEventListener("close", () => {
+        if (cancelled) return;
+        setLogConnected(false);
+        setLogError(true);
+        reconnectTimer = window.setTimeout(connect, 5000);
+      });
+    }
+
+    connect();
     return () => {
       cancelled = true;
+      if (reconnectTimer !== undefined) window.clearTimeout(reconnectTimer);
+      socket?.close();
     };
   }, []);
 
   const productionLogVisible = Boolean(
-    log && !log.sample && log.generatedAt && !Number.isNaN(Date.parse(log.generatedAt)) && log.entries.length,
+    log && !log.sample && log.generatedAt && !Number.isNaN(Date.parse(log.generatedAt)),
   );
-  const showLog = import.meta.env.DEV || productionLogVisible || logError;
+  const showLog = import.meta.env.DEV || productionLogVisible || logConnected || logError;
   const sections = useMemo(() => {
     return getVisibleSectionIds(showLog)
       .map((id) => ({ id, title: sectionTitle(id) }));
