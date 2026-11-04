@@ -6,10 +6,6 @@ import { site } from "../content/site";
 export default function ResumePage() {
   const resume = site.resume;
 
-  function handlePrint() {
-    window.print();
-  }
-
   return (
     <>
       <Helmet>
