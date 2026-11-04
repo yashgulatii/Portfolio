@@ -22,22 +22,20 @@ const startDate = new Date();
 startDate.setDate(startDate.getDate() - WINDOW_DAYS);
 
 const query = `
-  query GetPathCounts($zoneTag: string!, $startDate: string!, $endDate: string!) {
+  query GetPathCounts($zoneTag: string!, $start: Time!, $end: Time!) {
     viewer {
       zones(filter: { zoneTag: $zoneTag }) {
-        httpRequests1dGroups(
+        httpRequestsAdaptiveGroups(
           filter: {
-            date_geq: $startDate
-            date_leq: $endDate
-            clientRequestHTTPStatusCode: 404
+            datetime_geq: $start
+            datetime_lt: $end
           }
           limit: 10000
         ) {
+          count
           dimensions {
             clientRequestPath
-          }
-          sum {
-            requests
+            edgeResponseStatus
           }
         }
       }
@@ -47,12 +45,12 @@ const query = `
 
 const variables = {
   zoneTag: CF_ZONE_ID,
-  startDate: startDate.toISOString().split("T")[0],
-  endDate: endDate.toISOString().split("T")[0],
+  start: startDate.toISOString(),
+  end: endDate.toISOString(),
 };
 
 console.log(`Fetching 404 requests for the last ${WINDOW_DAYS} days...`);
-console.log(`Date range: ${variables.startDate} to ${variables.endDate}`);
+console.log(`Date range: ${variables.start.split("T")[0]} to ${variables.end.split("T")[0]}`);
 
 try {
   const response = await fetch("https://api.cloudflare.com/client/v4/graphql", {
@@ -75,7 +73,7 @@ try {
     throw new Error("GraphQL query returned errors");
   }
 
-  const groups = result.data?.viewer?.zones?.[0]?.httpRequests1dGroups;
+  const groups = result.data?.viewer?.zones?.[0]?.httpRequestsAdaptiveGroups;
 
   if (!groups || groups.length === 0) {
     console.log("No 404 requests found in the specified window.");
@@ -100,8 +98,9 @@ try {
 
   const pathCounts = new Map();
   for (const group of groups) {
+    if (group.dimensions.edgeResponseStatus !== 404) continue;
     const path = group.dimensions.clientRequestPath;
-    const count = group.sum.requests;
+    const count = group.count;
     pathCounts.set(path, (pathCounts.get(path) || 0) + count);
   }
 

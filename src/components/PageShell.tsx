@@ -10,6 +10,7 @@ type Props = {
   children: ReactNode;
   activeRoute?: "about" | "projects" | "resume" | null;
   activeSection?: string | null;
+  showLogNavigation?: boolean;
   beforeMain?: ReactNode;
 };
 
@@ -17,6 +18,7 @@ export default function PageShell({
   children,
   activeRoute,
   activeSection,
+  showLogNavigation = false,
   beforeMain,
 }: Props) {
   const [serialOpen, setSerialOpen] = useState(false);
@@ -29,12 +31,14 @@ export default function PageShell({
   }, []);
 
   const nav = site.content.nav.filter((item) => {
-    if ("conditional" in item && item.conditional === "log") return false;
+    if ("conditional" in item && item.conditional === "log") return showLogNavigation;
     return true;
   });
 
   const isActive = (item: (typeof nav)[number]) => {
     if (location.pathname === "/") {
+      if (item.href === "/#about") return activeSection === "about";
+      if (item.href === "/#projects") return activeSection === "work";
       if (item.href === "/#lab") return activeSection === "lab";
       if (item.href === "/#contact") return activeSection === "contact";
       if ("conditional" in item && item.conditional === "log" && item.href === "/#log") return activeSection === "log";
@@ -47,7 +51,7 @@ export default function PageShell({
 
   return (
     <div className="page-shell">
-      <Header activeSection={currentSection} />
+      <Header activeSection={currentSection} showLogNavigation={showLogNavigation} />
 
       <nav className="index-tabs" aria-label="Index tabs">
         {nav.map((item) => {

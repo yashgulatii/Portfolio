@@ -11,6 +11,7 @@ export const site = {
   },
   ui: {
     aboutMe: "About me",
+    allProjects: "All projects",
   },
   education: [
     {
@@ -373,8 +374,8 @@ export const site = {
     },
     tabColors: ["kraft", "clay", "sage", "slate", "mustard"],
     nav: [
-      { label: "About", href: "/about", color: "kraft" },
-      { label: "Projects", href: "/projects", color: "clay" },
+      { label: "About", href: "/#about", color: "kraft" },
+      { label: "Projects", href: "/#projects", color: "clay" },
       { label: "Lab", href: "/#lab", color: "sage" },
       { label: "Log", href: "/#log", color: "clay", conditional: "log" as const },
       { label: "Resume", href: "/resume", color: "slate", highlight: true },

@@ -18,8 +18,6 @@ export function getVisibleSectionIds(showLog: boolean): SiteSectionId[] {
     site.contact.labBlog ||
     site.contact.resumePdf,
   );
-  // Home page should only show: lab, log (conditional), and contact
-  // "about" and "work" are now separate routes
   if (hasContent(site.lab)) sections.push("lab");
   if (showLog) sections.push("log");
   if (hasContactMethod) sections.push("contact");

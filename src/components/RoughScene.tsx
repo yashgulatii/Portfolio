@@ -68,7 +68,7 @@ export default function RoughScene({
     <div className={`rough-scene rough-scene--${mode}`} ref={hostRef}>
       <svg
         ref={svgRef}
-        viewBox={mode === "topology" ? "0 0 900 520" : `0 0 510 ${Math.max(150, labels.length * 58)}`}
+        viewBox={mode === "topology" ? "0 0 900 520" : `0 0 510 ${Math.max(58, labels.length * 58)}`}
         role="img"
         aria-label={label}
         aria-describedby={description ? "topology-description" : undefined}
@@ -306,7 +306,10 @@ function drawTallies(
         }),
       );
     }
-    addText(svg, `${entry} · ${count}`, 225, y + 18, "tally-label");
+    const marksEndX = groups > 0
+      ? 8 + (groups - 1) * 42 + 33
+      : 8 + Math.max(0, remainder - 1) * 7 + (remainder > 0 ? 2 : 0);
+    addText(svg, `${entry} · ${count}`, marksEndX + 14, y + 18, "tally-label");
   });
   animatePaths(svg);
 }

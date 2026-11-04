@@ -4,20 +4,23 @@ import { site } from "../content/site";
 
 type HeaderProps = {
   activeSection?: string | null;
+  showLogNavigation?: boolean;
 };
 
-export default function Header({ activeSection }: HeaderProps) {
+export default function Header({ activeSection, showLogNavigation = false }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const labels = site.content.labels;
 
   const nav = site.content.nav.filter((item) => {
-    if ("conditional" in item && item.conditional === "log") return false; // Log renders conditionally
+    if ("conditional" in item && item.conditional === "log") return showLogNavigation;
     return true;
   });
 
   const isActive = (item: (typeof nav)[number]) => {
     if (location.pathname === "/") {
+      if (item.href === "/#about") return activeSection === "about";
+      if (item.href === "/#projects") return activeSection === "work";
       if (item.href === "/#lab") return activeSection === "lab";
       if (item.href === "/#contact") return activeSection === "contact";
       if ("conditional" in item && item.conditional === "log" && item.href === "/#log") return activeSection === "log";

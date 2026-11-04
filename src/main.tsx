@@ -29,24 +29,15 @@ function ScrollToTop() {
   const location = useLocation();
 
   React.useEffect(() => {
-    // Only scroll to top on route change, not hash change
-    if (!location.hash) {
-      window.scrollTo(0, 0);
+    if (location.hash) {
+      const frame = window.requestAnimationFrame(() => {
+        document.getElementById(location.hash.slice(1))?.scrollIntoView();
+      });
+      return () => window.cancelAnimationFrame(frame);
     }
-  }, [location.pathname]);
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.hash]);
 
-  return null;
-}
-
-function HashRedirect() {
-  React.useEffect(() => {
-    const hash = window.location.hash;
-    if (hash === "#about") {
-      window.location.replace("/about");
-    } else if (hash === "#work") {
-      window.location.replace("/projects");
-    }
-  }, []);
   return null;
 }
 
@@ -55,7 +46,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <HelmetProvider>
       <BrowserRouter>
         <ScrollToTop />
-        <HashRedirect />
         <Routes>
           {routes.map(({ path, page }) => {
             const Page = routePages[page];

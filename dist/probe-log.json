@@ -1,6 +1,11 @@
 {
-  "generatedAt": null,
-  "sample": true,
+  "generatedAt": "2026-11-04T16:22:43.703Z",
+  "sample": false,
   "windowDays": 7,
-  "entries": []
+  "entries": [
+    {
+      "label": "/as.php",
+      "count": 1
+    }
+  ]
 }

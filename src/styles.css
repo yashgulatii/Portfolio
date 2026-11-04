@@ -759,6 +759,8 @@ a { color: inherit; }
   grid-column: 1 / -1;
 }
 .about-grid > :only-child { grid-column: 1 / -1; }
+.project-summary-card { display: flex; flex-direction: column; }
+.project-summary-card .project-summary-link { margin-top: auto; padding-top: 12px; }
 
 .experiment-card {
   display: flex;

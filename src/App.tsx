@@ -102,22 +102,23 @@ function App() {
   const productionLogVisible = Boolean(
     log && !log.sample && log.generatedAt && !Number.isNaN(Date.parse(log.generatedAt)) && log.entries.length,
   );
+  const showLog = import.meta.env.DEV || productionLogVisible || logError;
   const sections = useMemo(() => {
-    return getVisibleSectionIds(import.meta.env.DEV || productionLogVisible)
+    return getVisibleSectionIds(showLog)
       .map((id) => ({ id, title: sectionTitle(id) }));
-  }, [productionLogVisible]);
+  }, [showLog]);
 
   useEffect(() => {
-    if (!sections.length) return;
+    const observedIds = ["about", "projects", ...sections.map(({ id }) => id)];
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
         if (visible) {
-          setActive(visible.target.id as SiteSectionId);
+          setActive(visible.target.id === "projects" ? "work" : visible.target.id as SiteSectionId);
         } else {
-          const firstSection = document.getElementById(sections[0]?.id);
+          const firstSection = document.getElementById(observedIds[0]);
           if (firstSection && firstSection.getBoundingClientRect().top > 0) {
             setActive(null);
           }
@@ -125,7 +126,7 @@ function App() {
       },
       { rootMargin: "-20% 0px -65% 0px", threshold: 0 },
     );
-    sections.forEach(({ id }) => {
+    observedIds.forEach((id) => {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     });
@@ -214,8 +215,9 @@ function App() {
   );
 
   return (
-    <PageShell activeSection={active} beforeMain={coverHeader}>
+    <PageShell activeSection={active} showLogNavigation={showLog} beforeMain={coverHeader}>
       <HomeAboutSection />
+      <HomeProjectsSection />
       {sections.map((section) => (
         <section className={`notebook-section notebook-section--${section.id}`} id={section.id} key={section.id}>
           <div className="section-heading">
@@ -231,7 +233,7 @@ function App() {
               log={import.meta.env.DEV ? sampleLog : log}
               error={logError}
               sample={import.meta.env.DEV}
-              visible={productionLogVisible}
+              visible={productionLogVisible || logError}
             />
           )}
           {section.id === "contact" && (
@@ -260,7 +262,7 @@ function HomeAboutSection() {
   );
 
   return (
-    <section className="notebook-section notebook-section--about-summary">
+    <section className="notebook-section notebook-section--about-summary" id="about">
       <div className="section-heading">
         <h2>{labels.about}</h2>
         <ElectronicsSticker
@@ -301,6 +303,36 @@ function HomeAboutSection() {
         )}
       </div>
       <Link to="/about" className="about-button">{site.ui.aboutMe}</Link>
+    </section>
+  );
+}
+
+function HomeProjectsSection() {
+  const projects = site.tools.slice(0, 3);
+
+  return (
+    <section className="notebook-section notebook-section--projects-summary" id="projects">
+      <div className="section-heading">
+        <h2>{labels.navProjects}</h2>
+        <ElectronicsSticker
+          kind="esp32"
+          note={site.stickers.find((sticker) => sticker.kind === "esp32")?.note ?? ""}
+        />
+      </div>
+      <div className="about-grid project-summary-grid">
+        {projects.map((project) => (
+          <ProfileCard key={project.name} title={project.name} className="project-summary-card">
+            {project.what && <p>{project.what}</p>}
+            {project.stack && <p><strong>{labels.stack}:</strong> {project.stack}</p>}
+            {project.repo && (
+              <p className="project-summary-link">
+                <a href={project.repo} target="_blank" rel="noopener noreferrer">{labels.repo}</a>
+              </p>
+            )}
+          </ProfileCard>
+        ))}
+      </div>
+      <Link to="/projects" className="about-button">{site.ui.allProjects}</Link>
     </section>
   );
 }
@@ -353,8 +385,8 @@ function LogSection({
   if (!sample && !visible) return null;
   return (
     <>
-      {sample && <p className="log-warning" role="note">{labels.logSample}</p>}
       {error && <p className="log-error" role="status">{labels.logError}</p>}
+      {sample && <p className="log-warning" role="note">{labels.logSample}</p>}
       {activeLog && (
         <>
           <p className="log-description">
