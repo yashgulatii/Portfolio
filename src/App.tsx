@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { z } from "zod";
 import RoughScene from "./components/RoughScene";
 import ElectronicsSticker from "./components/ElectronicsSticker";
@@ -240,33 +241,38 @@ function App() {
   );
 
   return (
-    <PageShell activeSection={active} showLogNavigation={showLog} beforeMain={coverHeader}>
-      <HomeAboutSection />
-      <HomeProjectsSection />
-      {sections.map((section) => (
-        <section className={`notebook-section notebook-section--${section.id}`} id={section.id} key={section.id}>
-          <div className="section-heading">
-            <h2>{section.title}</h2>
-            <ElectronicsSticker
-              kind={sectionStickers[section.id]}
-              note={site.stickers.find((sticker) => sticker.kind === sectionStickers[section.id])?.note ?? ""}
-            />
-          </div>
-          {section.id === "lab" && <LabSection />}
-          {section.id === "log" && (
-            <LogSection
-              log={import.meta.env.DEV ? sampleLog : log}
-              error={logError}
-              sample={import.meta.env.DEV}
-              visible={productionLogVisible || logError}
-            />
-          )}
-          {section.id === "contact" && (
-            <ContactSection copied={copied} copyError={copyError} onCopy={copyEmail} />
-          )}
-        </section>
-      ))}
-    </PageShell>
+    <>
+      <Helmet>
+        <title>Yash Gulati | Security portfolio</title>
+      </Helmet>
+      <PageShell activeSection={active} showLogNavigation={showLog} beforeMain={coverHeader}>
+        <HomeAboutSection />
+        <HomeProjectsSection />
+        {sections.map((section) => (
+          <section className={`notebook-section notebook-section--${section.id}`} id={section.id} key={section.id}>
+            <div className="section-heading">
+              <h2>{section.title}</h2>
+              <ElectronicsSticker
+                kind={sectionStickers[section.id]}
+                note={site.stickers.find((sticker) => sticker.kind === sectionStickers[section.id])?.note ?? ""}
+              />
+            </div>
+            {section.id === "lab" && <LabSection />}
+            {section.id === "log" && (
+              <LogSection
+                log={import.meta.env.DEV ? sampleLog : log}
+                error={logError}
+                sample={import.meta.env.DEV}
+                visible={productionLogVisible || logError}
+              />
+            )}
+            {section.id === "contact" && (
+              <ContactSection copied={copied} copyError={copyError} onCopy={copyEmail} />
+            )}
+          </section>
+        ))}
+      </PageShell>
+    </>
   );
 }
 

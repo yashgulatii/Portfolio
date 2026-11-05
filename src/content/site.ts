@@ -40,7 +40,11 @@ export const site = {
     ],
   },
   about: {
-    story: null as string[] | null,
+    story: [
+      "I am an electronics graduate who builds security labs and then attacks them on purpose. I want a SOC or AppSec role where I can protect an organization, whatever technology it runs.",
+      "I have liked logic since childhood. After I got my first computer in 6th standard, a YouTube video on hacking games led me to the ethical side of security. I started with web development and came back to security later. My degree gave me labs in digital electronics, FPGA boards, Arduino and VLSI. When the syllabus needed an old ARM compiler, I found one and set it up with VS Code to run the lab code. CampusTrack taught me how security fits into building software: I made it as secure as I could, still missed a broken access control flaw, then found and fixed it. In Chakravyuha I practice both sides. Kerberoasting taught me how a service account password actually gets cracked, and why group managed service accounts (gMSA) are a defense. Most of the work is troubleshooting, from pip missing from the PATH to a full disk stopping Wazuh from indexing logs.",
+      "Outside tech I like filmmaking and photography, and someday I want to make art to express myself. I also like electronics, astronomy, mathematics and physics, because I like anything with logic in it. I learn from experience more than from assumptions, and I travel when I can."
+    ],
   },
   contact: {
     email: "contactyashgulati@gmail.com",
